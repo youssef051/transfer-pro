@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Yusuf System</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="یوسف مینیو">
+    
+    <link rel="apple-touch-icon" href="https://img.icons8.com/color/512/chef-hat.png">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/color/512/chef-hat.png">
+    
+    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Yusuf%20Restaurant%20System%22,%22short_name%22:%22Yusuf%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22#0a0a0b%22,%22theme_color%22:%22#d4af37%22,%22icons%22:[{%22src%22:%22https://img.icons8.com/color/512/chef-hat.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
+
+    <style>
+        :root { --gold: #d4af37; --red: #8e0000; --dark: #0a0a0b; --card: rgba(255, 255, 255, 0.05); --border: rgba(212, 175, 55, 0.3); }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--dark); color: #fff; margin: 0; padding: 15px; user-select: none; }
+        .container { max-width: 500px; margin: auto; }
+        
+        header { text-align: center; padding: 25px 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+        .logo-img { width: 70px; height: 70px; margin-bottom: 10px; filter: drop-shadow(0 0 10px var(--gold)); }
+        .restaurant-name { color: var(--gold); font-size: 1.8rem; font-weight: bold; margin: 0; }
+
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 25px; padding: 20px; margin-bottom: 20px; backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { color: var(--gold); font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-top: 0; display: flex; align-items: center; gap: 8px; }
+        
+        .input-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        label { font-size: 0.9rem; color: #ccc; }
+        input { width: 110px; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 12px; color: white; text-align: center; font-size: 1.1rem; outline: none; border-bottom: 2px solid var(--gold); }
+
+        .btn { width: 100%; padding: 16px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: 0.3s; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-save { background: linear-gradient(135deg, #27ae60, #1e8449); color: white; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3); }
+        .btn-final { background: linear-gradient(135deg, var(--red), #660000); color: white; box-shadow: 0 5px 15px rgba(142, 0, 0, 0.3); margin-top: 20px; }
+        .btn-nav { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+        
+        .hidden { display: none; }
+        .history-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 15px; padding: 15px; margin-bottom: 12px; position: relative; border-right: 4px solid var(--gold); }
+        .del-btn { position: absolute; left: 15px; top: 15px; color: #ff4757; font-size: 1.2rem; cursor: pointer; }
+        .profit-val { color: #2ecc71; font-weight: bold; font-size: 1.3rem; margin-top: 5px; display: block; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <img src="https://img.icons8.com/color/512/chef-hat.png" class="logo-img" alt="logo">
+        <p class="restaurant-name">خواردنگەی یوسف</p>
+        <p id="liveDate" style="color:#666; font-size: 0.9rem; margin-top: 5px;"></p>
+    </header>
+
+    <div id="calcPage">
+        <div class="card">
+            <h2>🌅 دەستپێکی بەیانی</h2>
+            <div class="input-row"><label>کۆی هەویری لحم:</label><input type="number" id="m_l"></div>
+            <div class="input-row"><label>کۆی هەویری پیتزا:</label><input type="number" id="m_p"></div>
+            <button class="btn btn-save" onclick="saveMorning()">💾 سەیڤکردنی بەیانی</button>
+            <p id="m_status" style="text-align:center; color:#2ecc71; font-size:0.8rem; display:none; margin-top:10px;"></p>
+        </div>
+
+        <div class="card">
+            <h2>🌙 کۆتایی شەو</h2>
+            <div class="input-row"><label>ماوەی لحم:</label><input type="number" id="e_l_rem"></div>
+            <div class="input-row"><label>ماوەی پیتزا:</label><input type="number" id="e_p_rem"></div>
+            <hr style="opacity:0.1; margin:15px 0;">
+            <div class="input-row"><label>لحمی خوراو:</label><input type="number" id="eat_l"></div>
+            <div class="input-row"><label>پیتزای خوراو:</label><input type="number" id="eat_p"></div>
+            <div class="input-row" style="color:#ff4757"><label>مەسروفات:</label><input type="number" id="spent"></div>
+            <button class="btn btn-final" onclick="finishDay()">🏁 داخستنی ڕۆژ و تۆمارکردن</button>
+        </div>
+
+        <button class="btn btn-nav" onclick="showHistory()">📜 مێژووی تۆمارەکان</button>
+    </div>
+
+    <div id="historyPage" class="hidden">
+        <button class="btn btn-nav" onclick="showCalc()" style="background:#333; color:#fff; border:none; margin-bottom:20px;">⬅️ گەڕانەوە</button>
+        <h2 style="text-align:center;">📅 تۆمارەکانی ئەم مانگە</h2>
+        <div id="historyList"></div>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        const temp = localStorage.getItem('yusuf_morning');
+        if(temp) {
+            const data = JSON.parse(temp);
+            document.getElementById('m_l').value = data.l;
+            document.getElementById('m_p').value = data.p;
+            document.getElementById('m_status').style.display = 'block';
+            document.getElementById('m_status').innerText = "✅ بڕی بەیانی پارێزراوە (" + data.time + ")";
+        }
+        document.getElementById('liveDate').innerText = new Date().toLocaleDateString('ku-IQ', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    };
+
+    function saveMorning() {
+        const l = document.getElementById('m_l').value;
+        const p = document.getElementById('m_p').value;
+        if(!l || !p) return alert("بڕی هەویرەکان بنووسە!");
+        const data = { l, p, time: new Date().toLocaleTimeString('ku-IQ', {hour:'2-digit', minute:'2-digit'}) };
+        localStorage.setItem('yusuf_morning', JSON.stringify(data));
+        alert("سەیڤ کرا! ئێستا ئەپەکە دابخە تا شەو.");
+        location.reload();
+    }
+
+    function finishDay() {
+        const temp = localStorage.getItem('yusuf_morning');
+        if(!temp) return alert("سەرەتا بەیانیان سەیڤ بکە!");
+        const morning = JSON.parse(temp);
+        const l_rem = Number(document.getElementById('e_l_rem').value) || 0;
+        const p_rem = Number(document.getElementById('e_p_rem').value) || 0;
+        const el = Number(document.getElementById('eat_l').value) || 0;
+        const ep = Number(document.getElementById('eat_p').value) || 0;
+        const sp = Number(document.getElementById('spent').value) || 0;
+
+        const soldL = Number(morning.l) - l_rem;
+        const soldP = Number(morning.p) - p_rem;
+        const totalProfit = (soldL * 1250) + (soldP * 3000) - sp;
+
+        const record = {
+            id: Date.now(),
+            date: new Date().toLocaleDateString('ku-IQ', {day:'numeric', month:'numeric', weekday:'short'}),
+            desc: `فرۆشراو: ${soldL} لحم / ${soldP} پیتزا`,
+            extra: `مەسروف: ${sp.toLocaleString()} | خوراو: ${(el*1250 + ep*3000).toLocaleString()}`,
+            profit: totalProfit.toLocaleString()
+        };
+
+        let history = JSON.parse(localStorage.getItem('yusuf_final_db') || '[]');
+        history.unshift(record);
+        localStorage.setItem('yusuf_final_db', JSON.stringify(history));
+        localStorage.removeItem('yusuf_morning');
+        alert("تۆمار کرا! کۆی قازانج: " + record.profit + " دینار");
+        location.reload();
+    }
+
+    function showHistory() {
+        document.getElementById('calcPage').classList.add('hidden');
+        document.getElementById('historyPage').classList.remove('hidden');
+        const history = JSON.parse(localStorage.getItem('yusuf_final_db') || '[]');
+        const list = document.getElementById('historyList');
+        if(history.length === 0) return list.innerHTML = "<p style='text-align:center;'>هیچ تۆمارێک نییە</p>";
+        list.innerHTML = history.map(item => `
+            <div class="history-item">
+                <span class="del-btn" onclick="deleteRec(${item.id})">🗑️</span>
+                <div style="color:var(--gold); font-weight:bold;">${item.date}</div>
+                <div style="font-size:0.9rem; color:#ddd; margin-top:5px;">
+                    ${item.desc}<br>${item.extra}
+                    <span class="profit-val">${item.profit} د.ع</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function showCalc() {
+        document.getElementById('historyPage').classList.add('hidden');
+        document.getElementById('calcPage').classList.remove('hidden');
+    }
+
+    function deleteRec(id) {
+        if(confirm('سڕینەوە؟')) {
+            let history = JSON.parse(localStorage.getItem('yusuf_final_db') || '[]');
+            history = history.filter(i => i.id !== id);
+            localStorage.setItem('yusuf_final_db', JSON.stringify(history));
+            showHistory();
+        }
+    }
+</script>
+</body>
+</html>
