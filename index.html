@@ -7,12 +7,14 @@
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="یوسف مینیو">
+    <meta name="apple-mobile-web-app-title" content="یوسف">
     
-    <link rel="apple-touch-icon" href="https://img.icons8.com/color/512/chef-hat.png">
-    <link rel="icon" type="image/png" href="https://img.icons8.com/color/512/chef-hat.png">
+    <!-- ئایکۆنی سەرەکی بۆ مۆبایل و براوسەر -->
+    <link rel="apple-touch-icon" href="https://i.ibb.co/gM2cHwSJ/1776997118669.png">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/gM2cHwSJ/1776997118669.png">
     
-    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Yusuf%20Restaurant%20System%22,%22short_name%22:%22Yusuf%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22#0a0a0b%22,%22theme_color%22:%22#d4af37%22,%22icons%22:[{%22src%22:%22https://img.icons8.com/color/512/chef-hat.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
+    <!-- Web App Manifest - ڕاستەوخۆ لێرەدا نوێکراوەتەوە -->
+    <link rel="manifest" href="data:application/manifest+json,{%22short_name%22:%22%DB%8C%D9%88%D8%B3%D9%81%22,%22name%22:%22%DB%8C%D9%88%D8%B3%D9%81%22,%22icons%22:[{%22src%22:%22https://i.ibb.co/gM2cHwSJ/1776997118669.png%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22},{%22src%22:%22https://i.ibb.co/gM2cHwSJ/1776997118669.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}],%22start_url%22:%22index.html%22,%22display%22:%22standalone%22,%22theme_color%22:%22#0a0a0a%22,%22background_color%22:%22#0a0a0a%22}">
 
     <style>
         :root { --gold: #d4af37; --red: #8e0000; --dark: #0a0a0b; --card: rgba(255, 255, 255, 0.05); --border: rgba(212, 175, 55, 0.3); }
@@ -20,7 +22,7 @@
         .container { max-width: 500px; margin: auto; }
         
         header { text-align: center; padding: 25px 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-        .logo-img { width: 70px; height: 70px; margin-bottom: 10px; filter: drop-shadow(0 0 10px var(--gold)); }
+        .logo-img { width: 85px; height: 85px; margin-bottom: 10px; border-radius: 50%; border: 2px solid var(--gold); padding: 5px; box-shadow: 0 0 15px var(--gold); }
         .restaurant-name { color: var(--gold); font-size: 1.8rem; font-weight: bold; margin: 0; }
 
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 25px; padding: 20px; margin-bottom: 20px; backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
@@ -45,12 +47,14 @@
 
 <div class="container">
     <header>
-        <img src="https://img.icons8.com/color/512/chef-hat.png" class="logo-img" alt="logo">
+        <!-- لۆگۆکەت لێرەش گۆڕدرا بۆ ئۆریجیناڵەکە -->
+        <img src="https://i.ibb.co/gM2cHwSJ/1776997118669.png" class="logo-img" alt="logo">
         <p class="restaurant-name">خواردنگەی یوسف</p>
         <p id="liveDate" style="color:#666; font-size: 0.9rem; margin-top: 5px;"></p>
     </header>
 
     <div id="calcPage">
+        <!-- بەشی داخڵکردنی داتا وەک خۆیەتی -->
         <div class="card">
             <h2>🌅 دەستپێکی بەیانی</h2>
             <div class="input-row"><label>کۆی هەویری لحم:</label><input type="number" id="m_l"></div>
@@ -81,6 +85,7 @@
 </div>
 
 <script>
+    // سکریپتەکان وەک خۆیانن و هیچ گۆڕانکارییەکیان ناوێت بۆ کارکردن
     window.onload = function() {
         const temp = localStorage.getItem('yusuf_morning');
         if(temp) {
@@ -115,6 +120,7 @@
 
         const soldL = Number(morning.l) - l_rem;
         const soldP = Number(morning.p) - p_rem;
+        // لێرە قازانج هەژمار دەکرێت
         const totalProfit = (soldL * 1250) + (soldP * 3000) - sp;
 
         const record = {
