@@ -3,109 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Yusuf System</title>
-    
-    <!-- بەشی ناساندنی وەک ئەپ بۆ ئایفۆن و ئەندرۆید -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="یوسف مێنۆ">
-
-    <!-- لۆگۆی ئەپەکە کاتی تثبيت کردن -->
-    <link rel="apple-touch-icon" href="https://i.supaimg.com/aa375ff8-cba9-4631-9948-d2f83ef4a73b/5afaaab5-5507-4172-aad1-747d4296389d.png">
-    <link rel="icon" type="image/png" href="https://i.supaimg.com/aa375ff8-cba9-4631-9948-d2f83ef4a73b/5afaaab5-5507-4172-aad1-747d4296389d.png">
-
-    <!-- کۆدی مانێفێست بۆ ئەندرۆید و خێراکردنی ئەپەکە -->
-    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Yusuf%20Restaurant%22,%22short_name%22:%22Yusuf%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22#0a0a0a%22,%22theme_color%22:%22#d4af37%22,%22icons%22:[{%22src%22:%22https://i.supaimg.com/aa375ff8-cba9-4631-9948-d2f83ef4a73b/5afaaab5-5507-4172-aad1-747d4296389d.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
-
+    <title>خواردنگەی یوسف - سیستەمی تۆمارکردن</title>
     <style>
-        :root { --gold: #d4af37; --dark: #0a0a0b; --card: rgba(255, 255, 255, 0.05); --border: rgba(212, 175, 55, 0.3); }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--dark); color: #fff; margin: 0; padding: 15px; user-select: none; }
+        :root { --gold: #d4af37; --red: #8e0000; --dark: #0a0a0b; --card: rgba(255, 255, 255, 0.05); --border: rgba(212, 175, 55, 0.3); }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--dark); color: #fff; margin: 0; padding: 15px; }
         .container { max-width: 500px; margin: auto; }
-        header { text-align: center; padding: 20px 0; border-bottom: 1px solid var(--border); }
-        .restaurant-name { color: var(--gold); font-size: 1.8rem; font-weight: bold; margin: 0; }
-        .card { background: var(--card); border: 1px solid var(--border); border-radius: 25px; padding: 20px; margin-top: 20px; backdrop-filter: blur(15px); }
-        h2 { color: var(--gold); font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; backdrop-filter: blur(10px); }
+        h2 { color: var(--gold); font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-top: 0; }
         .input-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        input { width: 110px; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 12px; color: white; text-align: center; font-size: 1.1rem; outline: none; }
-        .btn { width: 100%; padding: 16px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 10px; }
-        .btn-save { background: linear-gradient(135deg, #27ae60, #1e8449); color: white; }
-        .btn-final { background: linear-gradient(135deg, #8e0000, #660000); color: white; }
-        .btn-nav { background: transparent; color: var(--gold); border: 1px solid var(--gold); margin-top: 20px; }
+        input { width: 110px; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: white; text-align: center; font-size: 1rem; outline: none; }
+        .btn { width: 100%; padding: 15px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+        .btn-save { background: #27ae60; color: white; border-bottom: 4px solid #1e8449; }
+        .btn-final { background: var(--red); color: white; border-bottom: 4px solid #660000; margin-top: 20px; }
+        .btn-history { background: transparent; color: var(--gold); border: 1px solid var(--gold); margin-top: 15px; }
+        .btn-back { background: #333; color: white; margin-bottom: 20px; }
         .hidden { display: none; }
-        .history-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 15px; padding: 15px; margin-bottom: 12px; border-right: 4px solid var(--gold); }
+        .history-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 15px; padding: 15px; margin-bottom: 10px; position: relative; }
+        .del-btn { position: absolute; left: 15px; top: 15px; color: #ff4757; font-size: 1.2rem; cursor: pointer; }
+        .profit-text { color: #2ecc71; font-weight: bold; font-size: 1.1rem; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <p class="restaurant-name">خواردنگەی یوسف</p>
+<div class="container" id="mainApp">
+    <header style="text-align:center; padding: 20px 0;">
+        <h1 style="color:var(--gold); margin:0;">خواردنگەی یوسف</h1>
+        <p id="liveDate" style="color:#666; font-size: 0.9rem;"></p>
     </header>
 
-    <div id="calcPage">
+    <!-- لاپەڕەی سەرەکی -->
+    <div id="entryPage">
         <div class="card">
-            <h2>🌅 بەیانی (هەویر)</h2>
-            <div class="input-row"><label>کۆی هەویری لحم:</label><input type="number" id="m_l"></div>
-            <div class="input-row"><label>کۆی هەویری پیتزا:</label><input type="number" id="m_p"></div>
-            <button class="btn btn-save" onclick="saveMorning()">💾 سەیڤکردن</button>
+            <h2>🌅 بەیانیان: تۆمارکردنی هەویر</h2>
+            <div class="input-row"><label>کۆی هەویری لحم:</label><input type="number" id="morning_l"></div>
+            <div class="input-row"><label>کۆی هەویری پیتزا:</label><input type="number" id="morning_p"></div>
+            <button class="btn btn-save" onclick="lockMorningData()">💾 سەیڤکردنی بەیانی</button>
+            <p id="saveMsg" style="text-align:center; color:#2ecc71; display:none; margin-top:10px; font-size:0.8rem;"></p>
         </div>
 
         <div class="card">
-            <h2>🌙 شەو (داخستن)</h2>
-            <div class="input-row"><label>ماوەی لحم:</label><input type="number" id="e_l_rem"></div>
-            <div class="input-row"><label>ماوەی پیتزا:</label><input type="number" id="e_p_rem"></div>
-            <div class="input-row" style="color: #61a5ff;"><label>لحمی خوراو:</label><input type="number" id="eat_l"></div>
-            <div class="input-row" style="color: #61a5ff;"><label>پیتزای خوراو:</label><input type="number" id="eat_p"></div>
-            <div class="input-row" style="color:#ff4757"><label>مەسروفات:</label><input type="number" id="spent"></div>
-            <button class="btn btn-final" onclick="finishDay()">🏁 کۆتایی ڕۆژ</button>
+            <h2>🌙 شەوان: داخستنی حیساب</h2>
+            <div class="input-row"><label>ماوەی لحم:</label><input type="number" id="night_l_rem"></div>
+            <div class="input-row"><label>ماوەی پیتزا:</label><input type="number" id="night_p_rem"></div>
+            <hr style="opacity:0.1; margin:15px 0;">
+            <div class="input-row"><label>لحمی خوراو:</label><input type="number" id="eat_l"></div>
+            <div class="input-row"><label>پیتزای خوراو:</label><input type="number" id="eat_p"></div>
+            <div class="input-row" style="color:#ff4757"><label>مەسروفات:</label><input type="number" id="daily_spent"></div>
+            <button class="btn btn-final" onclick="calculateAndArchive()">🏁 تۆمارکردنی کۆتایی ڕۆژ</button>
         </div>
-        <button class="btn btn-nav" onclick="showHistory()">📜 مێژوو</button>
+
+        <button class="btn btn-history" onclick="showHistoryPage()">📜 بینینی هەموو تۆمارەکان</button>
     </div>
 
+    <!-- لاپەڕەی مێژوو -->
     <div id="historyPage" class="hidden">
-        <button class="btn btn-nav" onclick="location.reload()">⬅️ گەڕانەوە</button>
-        <div id="historyList" style="margin-top:20px;"></div>
+        <button class="btn btn-back" onclick="showEntryPage()">⬅️ گەڕانەوە بۆ حیسابات</button>
+        <h2 style="text-align:center;">📅 تۆمارەکانی ڕابردوو</h2>
+        <div id="historyList"></div>
     </div>
 </div>
 
 <script>
-    function saveMorning() {
-        const data = { l: document.getElementById('m_l').value, p: document.getElementById('m_p').value };
-        localStorage.setItem('yusuf_morning', JSON.stringify(data));
-        alert("بڕی بەیانی سەیڤ کرا");
-    }
+    // لۆدکردنی داتا لە کاتی کردنەوە
+    window.onload = function() {
+        const savedMorning = localStorage.getItem('yusuf_morning_temp');
+        if (savedMorning) {
+            const data = JSON.parse(savedMorning);
+            document.getElementById('morning_l').value = data.l;
+            document.getElementById('morning_p').value = data.p;
+            document.getElementById('saveMsg').style.display = 'block';
+            document.getElementById('saveMsg').innerText = "✅ داتای بەیانی (کاتژمێر " + data.time + ") پارێزراوە";
+        }
+        document.getElementById('liveDate').innerText = new Date().toLocaleDateString('ku-IQ', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    };
 
-    function finishDay() {
-        const morning = JSON.parse(localStorage.getItem('yusuf_morning') || '{"l":0,"p":0}');
-        const l_rem = Number(document.getElementById('e_l_rem').value) || 0;
-        const p_rem = Number(document.getElementById('e_p_rem').value) || 0;
-        const el = Number(document.getElementById('eat_l').value) || 0;
-        const ep = Number(document.getElementById('eat_p').value) || 0;
-        const sp = Number(document.getElementById('spent').value) || 0;
+    function lockMorningData() {
+        const l = document.getElementById('morning_l').value;
+        const p = document.getElementById('morning_p').value;
+        if(!l || !p) return alert("تکایە بڕی بەیانیان بنووسە");
 
-        const soldL = Number(morning.l) - l_rem - el;
-        const soldP = Number(morning.p) - p_rem - ep;
-        const profit = (soldL * 1250) + (soldP * 3000) - sp;
-
-        const record = { date: new Date().toLocaleDateString('ku-IQ'), profit: profit.toLocaleString() };
-        let history = JSON.parse(localStorage.getItem('yusuf_final_db') || '[]');
-        history.unshift(record);
-        localStorage.setItem('yusuf_final_db', JSON.stringify(history));
-        alert("قازانج: " + record.profit + " د.ع");
-        localStorage.removeItem('yusuf_morning');
+        const morningData = { l: l, p: p, time: new Date().toLocaleTimeString('ku-IQ', { hour: '2-digit', minute: '2-digit' }) };
+        localStorage.setItem('yusuf_morning_temp', JSON.stringify(morningData));
+        alert("داتای بەیانی سەیڤ کرا و لێرە دەمێنێتەوە.");
         location.reload();
     }
 
-    function showHistory() {
-        document.getElementById('calcPage').classList.add('hidden');
+    function calculateAndArchive() {
+        const savedMorning = localStorage.getItem('yusuf_morning_temp');
+        if (!savedMorning) return alert("سەرەتا دەبێت بەیانیان داتاکە سەیڤ بکەیت!");
+
+        const morning = JSON.parse(savedMorning);
+        const l_tot = Number(morning.l);
+        const p_tot = Number(morning.p);
+        
+        const l_rem = Number(document.getElementById('night_l_rem').value) || 0;
+        const p_rem = Number(document.getElementById('night_p_rem').value) || 0;
+        const le = Number(document.getElementById('eat_l').value) || 0;
+        const pe = Number(document.getElementById('eat_p').value) || 0;
+        const spent = Number(document.getElementById('daily_spent').value) || 0;
+
+        const total = ((l_tot - l_rem) * 1250) + ((p_tot - p_rem) * 3000) - spent;
+
+        const record = {
+            id: Date.now(),
+            date: new Date().toLocaleDateString('ku-IQ', { weekday: 'short', day: 'numeric', month: 'numeric' }),
+            info: `فرۆش: ${l_tot - l_rem} لحم / ${p_tot - p_rem} پیتزا`,
+            eaten: `خواردن: ${(le*1250 + pe*3000).toLocaleString()}`,
+            spent: spent.toLocaleString(),
+            profit: total.toLocaleString()
+        };
+
+        let history = JSON.parse(localStorage.getItem('yusuf_history_v3') || '[]');
+        history.unshift(record);
+        localStorage.setItem('yusuf_history_v3', JSON.stringify(history));
+        
+        localStorage.removeItem('yusuf_morning_temp'); // پاککردنەوە بۆ سبەی
+        alert("تۆمار کرا! کۆتایی حیساب: " + total.toLocaleString() + " د.ع");
+        location.reload();
+    }
+
+    function showHistoryPage() {
+        document.getElementById('entryPage').classList.add('hidden');
         document.getElementById('historyPage').classList.remove('hidden');
-        const history = JSON.parse(localStorage.getItem('yusuf_final_db') || '[]');
-        document.getElementById('historyList').innerHTML = history.map(h => `
+        loadHistoryItems();
+    }
+
+    function showEntryPage() {
+        document.getElementById('historyPage').classList.add('hidden');
+        document.getElementById('entryPage').classList.remove('hidden');
+    }
+
+    function loadHistoryItems() {
+        const history = JSON.parse(localStorage.getItem('yusuf_history_v3') || '[]');
+        const list = document.getElementById('historyList');
+        if(history.length === 0) {
+            list.innerHTML = "<p style='text-align:center; color:#666;'>هیچ تۆمارێک نییە</p>";
+            return;
+        }
+
+        list.innerHTML = history.map(item => `
             <div class="history-item">
-                <strong>${h.date}</strong><br>قازانج: ${h.profit} د.ع
+                <span class="del-btn" onclick="deleteItem(${item.id})">🗑️</span>
+                <div style="color:var(--gold); font-weight:bold; margin-bottom:5px;">${item.date}</div>
+                <div style="font-size:0.9rem; color:#ccc;">
+                    ${item.info}<br>
+                    مەسروفات: ${item.spent} | ${item.eaten}<br>
+                    <span class="profit-text">کۆتایی: ${item.profit} د.ع</span>
+                </div>
             </div>
         `).join('');
     }
+
+    function deleteItem(id) {
+        if(confirm('ئایا دڵنیای لە سڕینەوە؟')) {
+            let history = JSON.parse(localStorage.getItem('yusuf_history_v3') || '[]');
+            history = history.filter(i => i.id !== id);
+            localStorage.setItem('yusuf_history_v3', JSON.stringify(history));
+            loadHistoryItems();
+        }
+    }
 </script>
+
 </body>
 </html>
